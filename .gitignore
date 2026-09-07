@@ -1,0 +1,11 @@
+2 Put this inside .gitignore
+.env
+
+__pycache__/
+*.pyc
+
+uploads/*
+!uploads/.gitkeep
+
+.vscode/
+.idea/
