@@ -51,3 +51,47 @@ class PublicStatsResponse(BaseModel):
 
 class ErrorResponse(BaseModel):
     detail: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    role: str
+    user_id: int
+
+
+class WorkOrderStatusUpdate(BaseModel):
+    status: str
+
+
+class ContractorResponse(BaseModel):
+    id: int
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    assigned_area: Optional[str] = None
+    rating: float
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class WorkOrderResponse(BaseModel):
+    id: int
+    detection_id: int
+    contractor_id: int
+    defect_type: Optional[str] = None
+    route_label: Optional[str] = None
+    assigned_date: Optional[datetime] = None
+    deadline_date: Optional[datetime] = None
+    status: str
+    escalated: bool
+    completed_at: Optional[datetime] = None
+
+
+class WorkOrderListResponse(BaseModel):
+    work_orders: list[WorkOrderResponse]

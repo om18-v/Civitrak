@@ -4,12 +4,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from database import Base, engine
-from routes import detections, videos
+from database import Base, engine, ensure_member4_schema
+from routes import detections, videos, work_orders
 
 
 
 Base.metadata.create_all(bind=engine)
+ensure_member4_schema()
 
 
 
@@ -60,6 +61,9 @@ app.include_router(
     detections.router,
 )
 
+app.include_router(
+    work_orders.router,
+)
 
 
 @app.get("/")
