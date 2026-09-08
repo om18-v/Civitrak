@@ -1,4 +1,3 @@
-2 Put this inside .gitignore
 .env
 
 __pycache__/
