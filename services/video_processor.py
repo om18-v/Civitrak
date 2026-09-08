@@ -4,6 +4,7 @@ from typing import Any, Callable, Optional
 
 from database import SessionLocal
 from models import Detection, Video
+from services.work_orders import create_work_orders_for_detections
 
 
 # ---------------------------------------------------------
@@ -173,6 +174,7 @@ def save_detections(
     """
 
     inserted_count = 0
+    inserted_detections = []
 
     for raw_detection in detections:
 
@@ -201,9 +203,16 @@ def save_detections(
         )
 
         db.add(detection)
+        inserted_detections.append(detection)
 
         inserted_count += 1
 
+    db.flush()
+    create_work_orders_for_detections(
+        db=db,
+        detections=inserted_detections,
+        route_label=route_label,
+    )
     return inserted_count
 
 

@@ -8,6 +8,7 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
+    UniqueConstraint,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
@@ -129,6 +130,12 @@ class Contractor(Base):
 
 class WorkOrder(Base):
     __tablename__ = "work_orders"
+    __table_args__ = (
+        UniqueConstraint(
+            "detection_id",
+            name="uq_work_orders_detection_id",
+        ),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
 
@@ -150,6 +157,8 @@ class WorkOrder(Base):
     deadline_date = Column(DateTime)
 
     status = Column(String(20))
+
+    completed_at = Column(DateTime)
 
     escalated = Column(
         Boolean,
