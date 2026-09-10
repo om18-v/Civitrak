@@ -1,0 +1,27 @@
+model:
+  # TEMP: no trained weights (models/best.pt) were found in the project.
+  # Using a stock pretrained model so the pipeline runs end-to-end.
+  # Once Member 6 delivers the real pothole/manhole weights, put the file at
+  # Backend/models/best.pt and change this back to "models/best.pt".
+  weights: "yolov8n.pt"
+  device: "auto"   # "auto" picks cuda if available, else cpu
+processing:
+  target_fps: 3
+inference:
+  confidence_threshold: 0.4
+classes:
+  enabled:
+    - pothole
+    - open_manhole
+output:
+  thumbnail_dir: "ai_ml/outputs/thumbs"
+ocr:
+  enabled: true
+training:
+  dataset_yaml: "dataset/data.yaml"
+  epochs: 50
+  batch_size: 16
+  image_size: 640
+  learning_rate: 0.01
+  workers: 4
+  output_dir: "ai_ml/outputs/training"

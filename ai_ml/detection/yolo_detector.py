@@ -1,11 +1,34 @@
 import logging
+import torch
 from ultralytics import YOLO
 import cv2
 from pathlib import Path
 
+# Known Ultralytics pretrained aliases that YOLO() can auto-download.
+# Anything else that isn't found on disk is treated as a missing local weights file.
+_KNOWN_PRETRAINED_PREFIXES = ("yolov8", "yolo11", "yolov5", "yolov9", "yolov10")
+
 class YOLODetector:
     def __init__(self, weights, device, conf_thresh, enabled_classes):
+        weights_path = Path(weights)
+        is_known_pretrained = str(weights).lower().startswith(_KNOWN_PRETRAINED_PREFIXES)
+
+        if not weights_path.is_file() and not is_known_pretrained:
+            raise FileNotFoundError(
+                f"Model weights not found: '{weights}'. "
+                "Place your trained .pt file at that path (relative to where "
+                "uvicorn is launched), or point ai_ml/config/config.yaml at a "
+                "stock model like 'yolov8n.pt' to test the pipeline."
+            )
+
         self.model = YOLO(weights)
+
+        if device == "auto":
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+        elif device == "cuda" and not torch.cuda.is_available():
+            logging.warning("device='cuda' requested but no CUDA GPU is available; falling back to CPU.")
+            device = "cpu"
+
         self.device = device
         self.conf_thresh = conf_thresh
         self.enabled_classes = enabled_classes
