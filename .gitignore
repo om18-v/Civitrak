@@ -1,0 +1,20 @@
+# Frontend
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.vite/
+
+# Python
+Backend/__pycache__/
+Backend/**/*.pyc
+Backend/.pytest_cache/
+
+# Local configuration / secrets
+Backend/.env
+
+# Runtime/generated data
+Backend/uploads/
+Backend/ai_ml/outputs/
+*.db
+civitrak.db
+*.log
+.DS_Store
