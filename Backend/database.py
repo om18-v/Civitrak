@@ -12,10 +12,17 @@ load_dotenv(BASE_DIR / ".env")
 # For a clean demo/local checkout, fall back to a file-backed SQLite database
 # so the API can start without requiring a separately installed database server.
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./civitrak.db")
+# Render (and some other providers) issue postgres:// URLs; SQLAlchemy
+# requires postgresql:// so normalise here before creating the engine.
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-engine_kwargs = {"pool_pre_ping": True}
+engine_kwargs: dict = {"pool_pre_ping": True}
 if DATABASE_URL.startswith("sqlite"):
     engine_kwargs["connect_args"] = {"check_same_thread": False}
+else:
+    # Keep cloud connections alive and avoid stale socket errors on Render
+    engine_kwargs["pool_recycle"] = 300
 
 engine = create_engine(DATABASE_URL, **engine_kwargs)
 

@@ -6,7 +6,7 @@ psycopg2-binary
 pydantic
 pydantic-settings
 python-dotenv
-opencv-python
+opencv-python-headless
 reportlab
 PyYAML
 ultralytics
