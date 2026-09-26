@@ -1,0 +1,56 @@
+# SIHPS124 — Road Defect Detection Dataset Configuration
+#
+# IMPORTANT: This file is a TEMPLATE.
+# Update 'path' to the absolute path of your dataset directory before training.
+# Do NOT train on an empty dataset.
+#
+# Recommended dataset: RDD2022 (Road Damage Dataset 2022)
+# Download: https://zenodo.org/record/7999875
+# License: CC BY 4.0
+#
+# Additional dataset: Roboflow Pothole Dataset
+# Download: https://universe.roboflow.com/joseph-nelson/pothole
+# Download in YOLOv8 format and merge into this directory structure.
+
+# -----------------------------------------------------------------------
+# Update this to the absolute path of your Backend/dataset/ directory.
+# Example (Linux/Mac): /home/user/SIHPS124/Backend/dataset
+# Example (Windows):   C:/Projects/SIHPS124/Backend/dataset
+# -----------------------------------------------------------------------
+path: /PLACEHOLDER/Backend/dataset
+
+train: images/train
+val:   images/val
+test:  images/test
+
+# Number of classes
+nc: 5
+
+# Class names — must match the labels in your dataset exactly.
+# Do NOT add classes for which you have no training data.
+names:
+  0: pothole
+  1: road_crack
+  2: open_manhole
+  3: damaged_surface
+  4: damaged_signboard
+
+# -----------------------------------------------------------------------
+# Notes:
+#
+# - RDD2022 classes map approximately as:
+#     D00 (Longitudinal Crack) → road_crack
+#     D10 (Transverse Crack)   → road_crack
+#     D20 (Alligator Crack)    → road_crack
+#     D40 (Pothole)            → pothole
+#
+# - open_manhole requires additional labelled data from your target region.
+#   Check Roboflow universe: https://universe.roboflow.com (search "manhole")
+#
+# - damaged_signboard requires roadway sign-damage datasets.
+#   Check CURE-TSD or similar datasets.
+#
+# - This config intentionally omits classes with insufficient public data:
+#     faded_zebra_crossing, traffic_signal_defect, headlight_defect
+#   These require specialized datasets or separate classifier architectures.
+# -----------------------------------------------------------------------

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+python-multipart
+sqlalchemy
+psycopg2-binary
+pydantic
+pydantic-settings
+python-dotenv
+opencv-python
+reportlab
+PyYAML
+ultralytics

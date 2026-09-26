@@ -1,0 +1,53 @@
+# CiviTrak production-minded road inspection configuration
+#
+# Model selection is automatic:
+#   1) Backend/models/best.pt           -> your trained multi-class road model
+#   2) Backend/models/pothole_best.pt   -> bundled setup target for a pothole model
+#   3) Hybrid OpenCV road-surface fallback -> works without a model, clearly marked
+#
+# The fallback is a prototype screening layer, not a guarantee of detecting every defect.
+
+model:
+  model_mode: "auto"
+  weights: "models/best.pt"
+  pothole_weights: "models/pothole_best.pt"
+  fallback_weights: "yolov8n.pt"
+
+classes:
+  enabled:
+    - pothole
+    - road_crack
+    - open_manhole
+    - damaged_surface
+    - damaged_signboard
+
+inference:
+  confidence_threshold: 0.12
+  auto_accept_threshold: 0.78
+  review_threshold: 0.45
+  nms_iou_threshold: 0.45
+  imgsz: 960
+  augmented_pass: true
+
+deduplication:
+  iou_overlap_threshold: 0.25
+  center_distance_ratio: 0.18
+  max_frame_gap: 24
+  min_frames_to_confirm: 1
+
+severity:
+  rules:
+    critical_classes:
+      - open_manhole
+    high_confidence_threshold: 0.72
+    high_area_ratio_threshold: 0.045
+    critical_area_ratio_threshold: 0.12
+
+processing:
+  target_fps: 4
+  max_frames: 6000
+  min_frame_interval_seconds: 0.20
+
+output:
+  thumbs_dir: "ai_ml/outputs/thumbs"
+  evidence_quality: 92

@@ -1,0 +1,14 @@
+.env
+
+__pycache__/
+*.pyc
+
+uploads/*
+!uploads/.gitkeep
+
+.vscode/
+.idea/
+
+dist/
+node_modules/
+package-lock.json
